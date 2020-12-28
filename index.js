@@ -24,6 +24,7 @@ app.get('/stats/:username', async (req, res) => {
     const data = await graphqlWithAuth(`
         {
             user: user(login: "${username}"){
+                login
                 followers {
                     totalCount
                 }
