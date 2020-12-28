@@ -1,0 +1,12 @@
+{
+  "name": "my-github-stats-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Androz2091 <androz2091@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/graphql": "^4.5.8",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
+}
