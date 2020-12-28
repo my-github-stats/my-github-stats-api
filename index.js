@@ -27,6 +27,18 @@ app.get('/stats/:username', async (req, res) => {
                 followers {
                     totalCount
                 }
+                pullRequests (first: 0) {
+                    totalCount
+                }
+                issueComments (first: 0) {
+                    totalCount
+                }
+                commitComments (first: 0) {
+                    totalCount
+                }
+                gistComments (first: 0) {
+                    totalCount
+                }
             }
             repos: search(query: "user:${username} fork:false", type: REPOSITORY, first: 100) {
                 repositoryCount
