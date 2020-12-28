@@ -23,6 +23,11 @@ app.get('/stats/:username', async (req, res) => {
 
     const data = await graphqlWithAuth(`
         {
+            user: user(login: "${username}"){
+                followers {
+                    totalCount
+                }
+            }
             repos: search(query: "user:${username} fork:false", type: REPOSITORY, first: 100) {
                 repositoryCount
                 edges {
