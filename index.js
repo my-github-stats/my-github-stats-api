@@ -41,7 +41,7 @@ app.get('/stats/:username', async (req, res) => {
                     totalCount
                 }
             }
-            repos: search(query: "user:${username} fork:false", type: REPOSITORY, first: 100) {
+            repos: search(query: "user:${username} fork:false sort:stars-desc", type: REPOSITORY, first: 100) {
                 repositoryCount
                 edges {
                     node {
