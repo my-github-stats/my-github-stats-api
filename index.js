@@ -70,7 +70,12 @@ const fetchRepos = (username, fetchUserInfo = false, afterCursor) => {
                             primaryLanguage {
                                 name
                             }
-                            content:object(expression: "master:package.json") {
+                            packageMaster:object(expression: "master:package.json") {
+                                ... on Blob {
+                                    text
+                                }
+                            }
+                            packageMain:object(expression: "main:package.json") {
                                 ... on Blob {
                                     text
                                 }
@@ -125,8 +130,8 @@ app.get('/stats/:username', async (req, res) => {
         }
     }
     const packages = data.repos.edges
-        .filter((r) => r.node.content)
-        .map((r) => parsePackageJSON(r.node.content.text)?.name)
+        .filter((r) => r.node.packageMaster || r.node.packageMain)
+        .map((r) => parsePackageJSON(r.node.packageMaster?.text || r.node.packageMain?.text)?.name)
         .filter((value) => value);
     const packagesPerReq = 128;
     const chunks = [ ...Array(Math.ceil(packages.length / packagesPerReq))].map(_ => packages.splice(0, packagesPerReq));
