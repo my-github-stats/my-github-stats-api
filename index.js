@@ -100,12 +100,18 @@ app.get('/stats/:username', async (req, res) => {
     let afterCursor = null;
     let fetchCount = 0;
     while (hasNextPage) {
-        const fetchedData = await fetchRepos(username, !data, afterCursor);
-        if (!data) data = fetchedData;
-        else data.repos.edges = [ ...data.repos.edges, ...fetchedData.repos.edges ];
-        hasNextPage = fetchedData.repos.pageInfo.hasNextPage;
-        afterCursor = fetchedData.repos.pageInfo.endCursor;
-        console.log(`${++fetchCount} fetch made for ${username} (${data.repos.edges.length} / ${data.repos.repositoryCount})`);
+        const fetchedData = await fetchRepos(username, !data, afterCursor).catch(() => {});
+        if (!fetchedData) {
+            return res.send({
+                error: 'User not found'
+            });
+        } else {
+            if (!data) data = fetchedData;
+            else data.repos.edges = [ ...data.repos.edges, ...fetchedData.repos.edges ];
+            hasNextPage = fetchedData.repos.pageInfo.hasNextPage;
+            afterCursor = fetchedData.repos.pageInfo.endCursor;
+            console.log(`${++fetchCount} fetch made for ${username} (${data.repos.edges.length} / ${data.repos.repositoryCount})`);
+        }
     }
 
     const toNPMFormat = (ts) => new Date(ts).toISOString().slice(0, 10);
